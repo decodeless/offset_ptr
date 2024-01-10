@@ -1,0 +1,6 @@
+AccessModifierOffset: -4
+BasedOnStyle: LLVM
+IndentPPDirectives: BeforeHash
+IndentWidth: 4
+PointerAlignment: Left
+SortIncludes: true

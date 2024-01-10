@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+    <Type Name="offset_ptr&lt;*&gt;">
+        <DisplayString Condition="m_offset == 1">{{ NullValue }}</DisplayString>
+        <DisplayString Condition="m_offset != 1">{{ {(void*)this} + {m_offset} }}</DisplayString>
+        <Expand>
+            <Item Name="[ptr]" Condition="m_offset != 1">*($T1*)((char*)this + m_offset)</Item>
+        </Expand>
+    </Type>
+</AutoVisualizer>
