@@ -15,18 +15,21 @@ if(NOT GTest_FOUND)
 endif()
 
 # Unit tests
-add_executable(unit_tests
+add_executable(${PROJECT_NAME}_tests
     src/test_offset_ptr.cpp
     src/test_offset_span.cpp
     )
-target_link_libraries(unit_tests offset_ptr gtest_main)
+target_link_libraries(${PROJECT_NAME}_tests offset_ptr gtest_main)
 
 # TODO: presets? https://stackoverflow.com/questions/45955272/modern-way-to-set-compiler-flags-in-cross-platform-cmake-project
 if(MSVC)
-  target_compile_options(unit_tests PRIVATE /W4 /WX)
+    target_compile_options(${PROJECT_NAME}_tests PRIVATE /W4 /WX)
 else()
-  target_compile_options(unit_tests PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(${PROJECT_NAME}_tests PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(${PROJECT_NAME}_tests PRIVATE -fbounds-check)
+    endif()
 endif()
 
 include(GoogleTest)
-gtest_discover_tests(unit_tests)
+gtest_discover_tests(${PROJECT_NAME}_tests)

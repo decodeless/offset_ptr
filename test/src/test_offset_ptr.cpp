@@ -106,7 +106,7 @@ TEST(Ptr, Readme) {
 
     // Duplicate the memory. file2's ptr implicitly points to file2's data
     File file2;
-    std::memcpy(&file2, &file, sizeof(file));
+    std::memcpy(reinterpret_cast<void*>(&file2), &file, sizeof(file));
     EXPECT_TRUE(file2.ptr == &file2.data);
     EXPECT_TRUE(*file2.ptr == 42);
 

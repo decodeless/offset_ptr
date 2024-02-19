@@ -12,6 +12,10 @@
     #include <ranges>
 #endif
 
+#ifndef ENABLE_OFFSET_PTR_TRANSLATE
+#define ENABLE_OFFSET_PTR_TRANSLATE 0
+#endif
+
 namespace nodecode {
 
 // std::span equivalent but implemented with an offset_ptr
@@ -31,6 +35,15 @@ public:
     std::span<T> subspan(size_type offset) const {
         return {m_data.get() + offset, m_size - offset};
     }
+    #if ENABLE_OFFSET_PTR_TRANSLATE
+    std::span<T> translate(const void* srcBase, void* dstBase) const {
+        return {m_data.translate(srcBase, dstBase), m_size};
+    }
+    std::span<const T> translate(const void* srcBase,
+                                 const void* dstBase) const {
+        return {m_data.translate(srcBase, dstBase), m_size};
+    }
+    #endif
 #endif
 
 #ifdef __cpp_lib_ranges
