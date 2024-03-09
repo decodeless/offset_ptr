@@ -2,9 +2,11 @@
 
 #include <cstring>
 #include <gtest/gtest.h>
-#include <nodecode/offset_ptr.hpp>
+#include <decodeless/offset_ptr.hpp>
 
-using namespace nodecode;
+using namespace decodeless;
+
+static_assert(std::is_trivially_destructible_v<offset_ptr<int>>);
 
 TEST(Ptr, ConstructorDefault) {
     offset_ptr<int> ptr;

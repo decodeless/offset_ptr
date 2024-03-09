@@ -1,4 +1,4 @@
-# pknowles offset_ptr
+# decodeless::offset_ptr
 
 Tiny header-only library for an address space independent data structure. The
 humble offset pointer is a relative address from its own address in memory
@@ -13,12 +13,15 @@ same address space it will still work. Quite useful if you're...
 A tiny offset span class is provided too, which is just an offset pointer and
 size. It `offset_span` is very similar to `std::span` but with a relative address.
 
+Part of the [`decodeless`](https://github.com/decodeless) collection of utility
+libraries for conveniently reading and writing files via memory mapping.
+
 **Example: offset_ptr**
 
 ```
-#include <nodecode/offset_ptr.hpp>
+#include <decodeless/offset_ptr.hpp>
 
-using namespace nodecode;
+using namespace decodeless;
 
 ...
 
@@ -49,9 +52,9 @@ EXPECT_TRUE(file.data == 42);
 **Example: offset_span**
 
 ```
-#include <nodecode/offset_span.hpp>
+#include <decodeless/offset_span.hpp>
 
-using namespace nodecode;
+using namespace decodeless;
 
 ...
 

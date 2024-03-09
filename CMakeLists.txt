@@ -2,23 +2,23 @@
 
 cmake_minimum_required(VERSION 3.20)
 
-project(offset_ptr)
+project(decodeless_offset_ptr)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_library(offset_ptr INTERFACE)
-target_include_directories(offset_ptr INTERFACE include)
+add_library(decodeless_offset_ptr INTERFACE)
+target_include_directories(decodeless_offset_ptr INTERFACE include)
 
-if (MSVC_IDE)
-  target_sources(offset_ptr INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/nodecode/offset_ptr.natvis
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/nodecode/offset_span.natvis
-  )
+if(MSVC_IDE)
+  target_sources(decodeless_offset_ptr INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include/decodeless/offset_ptr.natvis
+                                                 ${CMAKE_CURRENT_SOURCE_DIR}/include/decodeless/offset_span.natvis)
 endif()
 
+add_library(decodeless::offset_ptr ALIAS decodeless_offset_ptr)
+
 if(BUILD_TESTING)
-  option(BUILD_OFFSET_PTR_TESTING "Enable offset_ptr testing" ON)
-  if(BUILD_OFFSET_PTR_TESTING)
+  option(BUILD_DECODELESS_TESTING "Enable decodeless testing" ON)
+  if(BUILD_DECODELESS_TESTING)
     enable_testing()
     add_subdirectory(test)
   endif()

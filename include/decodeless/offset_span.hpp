@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <nodecode/offset_ptr.hpp>
+#include <decodeless/offset_ptr.hpp>
 
 #if __has_include(<span>)
     #include <span>
@@ -16,7 +16,7 @@
 #define ENABLE_OFFSET_PTR_TRANSLATE 0
 #endif
 
-namespace nodecode {
+namespace decodeless {
 
 // std::span equivalent but implemented with an offset_ptr
 template <class T> class offset_span {
@@ -70,4 +70,4 @@ template <typename Range>
 offset_span(Range&& range) -> offset_span<std::remove_reference_t<
     decltype(*std::ranges::data(std::forward<Range>(range)))>>;
 
-} // namespace nodecode
+} // namespace decodeless

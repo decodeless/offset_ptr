@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
-    <Type Name="offset_ptr&lt;*&gt;">
+    <Type Name="decodeless::offset_ptr&lt;*&gt;">
         <DisplayString Condition="m_offset == 1">{{ NullValue }}</DisplayString>
         <DisplayString Condition="m_offset != 1">{{ {(void*)this} + {m_offset} }}</DisplayString>
         <Expand>

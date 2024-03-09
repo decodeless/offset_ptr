@@ -3,12 +3,13 @@
 #pragma once
 
 #include <cstddef>
+#include <type_traits>
 
 #ifndef ENABLE_OFFSET_PTR_TRANSLATE
 #define ENABLE_OFFSET_PTR_TRANSLATE 0
 #endif
 
-namespace nodecode {
+namespace decodeless {
 
 // Pointer with storage relative to its current memory location
 template <class T> class offset_ptr {
@@ -17,7 +18,9 @@ public:
     using offset_type = std::ptrdiff_t;
     using size_type = std::size_t;
     offset_ptr() = default;
+    ~offset_ptr() noexcept = default;
     offset_ptr(const offset_ptr& other) : offset_ptr(other.get()) {}
+    offset_ptr(offset_ptr&& other) noexcept : offset_ptr(other.get()) {}
     offset_ptr(T* ptr) { set(ptr); }
     T* get() const {
         return m_offset == NullValue ? nullptr
@@ -35,6 +38,10 @@ public:
         return get() != other.get();
     }
     offset_ptr& operator=(const offset_ptr& other) {
+        set(other.get());
+        return *this;
+    }
+    offset_ptr& operator=(offset_ptr&& other) noexcept {
         set(other.get());
         return *this;
     }
@@ -65,4 +72,4 @@ private:
     offset_type m_offset = NullValue;
 };
 
-} // namespace nodecode
+} // namespace decodeless

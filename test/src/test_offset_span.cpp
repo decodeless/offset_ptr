@@ -1,9 +1,9 @@
 // Copyright (c) 2024 Pyarelal Knowles, MIT License
 
 #include <gtest/gtest.h>
-#include <nodecode/offset_span.hpp>
+#include <decodeless/offset_span.hpp>
 
-using namespace nodecode;
+using namespace decodeless;
 
 TEST(Span, ConstructorDefault) {
     offset_span<int> span;
