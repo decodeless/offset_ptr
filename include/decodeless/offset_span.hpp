@@ -3,6 +3,7 @@
 #pragma once
 
 #include <decodeless/offset_ptr.hpp>
+#include <type_traits>
 
 #if __has_include(<span>)
     #include <span>
@@ -29,7 +30,9 @@ public:
     offset_span(T* ptr, size_type count) : m_data(ptr), m_size(count) {}
 
 #ifdef __cpp_lib_span
-    offset_span(const std::span<T>& span)
+    template <class U>
+        requires(std::is_same_v<T, U> || std::is_same_v<T, std::remove_cv_t<U>>)
+    offset_span(const std::span<U>& span)
         : offset_span(span.data(), span.size()) {}
     operator std::span<T>() const { return {m_data.get(), m_size}; }
     std::span<T> subspan(size_type offset) const {

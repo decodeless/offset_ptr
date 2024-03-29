@@ -18,6 +18,28 @@ TEST(Span, ConstructorPtrSize) {
     EXPECT_EQ(3, span.size());
 }
 
+TEST(Span, ConstructorSpan) {
+    int i[3];
+    std::span<int> stdspan(i);
+    offset_span<int> span(stdspan);
+    EXPECT_EQ(i, span.data());
+    EXPECT_EQ(3, span.size());
+    span = stdspan;
+    EXPECT_EQ(i, span.data());
+    EXPECT_EQ(3, span.size());
+}
+
+TEST(Span, ConstructorSpanConst) {
+    int i[3];
+    std::span<int> stdspan(i);
+    offset_span<const int> span(stdspan);
+    EXPECT_EQ(i, span.data());
+    EXPECT_EQ(3, span.size());
+    span = stdspan;
+    EXPECT_EQ(i, span.data());
+    EXPECT_EQ(3, span.size());
+}
+
 TEST(Span, ConstructorRange) {
     int i[3];
     offset_span<int> span(i);
