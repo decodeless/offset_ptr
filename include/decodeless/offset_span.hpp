@@ -30,10 +30,6 @@ public:
     offset_span(T* ptr, size_type count) : m_data(ptr), m_size(count) {}
 
 #ifdef __cpp_lib_span
-    template <class U>
-        requires(std::is_same_v<T, U> || std::is_same_v<T, std::remove_cv_t<U>>)
-    offset_span(const std::span<U>& span)
-        : offset_span(span.data(), span.size()) {}
     operator std::span<T>() const { return {m_data.get(), m_size}; }
     std::span<T> subspan(size_type offset) const {
         return {m_data.get() + offset, m_size - offset};
@@ -50,10 +46,14 @@ public:
 #endif
 
 #ifdef __cpp_lib_ranges
-    template <class Range>
-        requires std::ranges::contiguous_range<Range>
-    offset_span(Range& range)
+    template <std::ranges::contiguous_range Range>
+    offset_span(Range&& range)
         : offset_span(std::ranges::data(range), std::ranges::size(range)) {}
+    template <std::ranges::contiguous_range Range>
+    offset_span& operator=(Range&& range) {
+        return *this = offset_span(std::ranges::data(range),
+                                   std::ranges::size(range));
+    }
 #endif
 
     iterator data() const { return m_data.get(); }

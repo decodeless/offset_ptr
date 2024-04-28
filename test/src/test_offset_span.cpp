@@ -1,7 +1,8 @@
 // Copyright (c) 2024 Pyarelal Knowles, MIT License
 
-#include <gtest/gtest.h>
 #include <decodeless/offset_span.hpp>
+#include <gtest/gtest.h>
+#include <vector>
 
 using namespace decodeless;
 
@@ -44,6 +45,13 @@ TEST(Span, ConstructorRange) {
     int i[3];
     offset_span<int> span(i);
     EXPECT_EQ(i, span.data());
+    EXPECT_EQ(3, span.size());
+}
+
+TEST(Span, ConstructorVector) {
+    std::vector<int> i(3);
+    offset_span<int> span(i);
+    EXPECT_EQ(i.data(), span.data());
     EXPECT_EQ(3, span.size());
 }
 
