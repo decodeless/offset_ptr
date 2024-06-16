@@ -3,6 +3,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 #include <type_traits>
 
 #ifndef ENABLE_OFFSET_PTR_TRANSLATE
@@ -16,7 +17,7 @@ template <class T> class offset_ptr {
 public:
     using value_type = T;
     using offset_type = std::ptrdiff_t;
-    using size_type = std::size_t;
+    using size_type = std::uint64_t;
     offset_ptr() = default;
     ~offset_ptr() noexcept = default;
     offset_ptr(const offset_ptr& other) : offset_ptr(other.get()) {}
