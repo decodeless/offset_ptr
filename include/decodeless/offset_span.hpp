@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <decodeless/offset_ptr.hpp>
 #include <type_traits>
 
@@ -20,10 +21,12 @@
 namespace decodeless {
 
 // std::span equivalent but implemented with an offset_ptr
+// Uses a fixed x64 size type for binary stability in files. May conflict with
+// std::span conversion on x32 systems
 template <class T> class offset_span {
 public:
     using value_type = T;
-    using size_type = std::size_t;
+    using size_type = std::uint64_t;
     using iterator = T*;
     using reference = T&;
     offset_span() = default;
