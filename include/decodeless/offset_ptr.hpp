@@ -7,7 +7,7 @@
 #include <type_traits>
 
 #ifndef ENABLE_OFFSET_PTR_TRANSLATE
-#define ENABLE_OFFSET_PTR_TRANSLATE 0
+    #define ENABLE_OFFSET_PTR_TRANSLATE 0
 #endif
 
 namespace decodeless {
@@ -23,7 +23,7 @@ public:
     offset_ptr(const offset_ptr& other) : offset_ptr(other.get()) {}
     offset_ptr(offset_ptr&& other) noexcept : offset_ptr(other.get()) {}
     offset_ptr(T* ptr) { set(ptr); }
-    T* get() const {
+    [[nodiscard]] T* get() const {
         return m_offset == NullValue ? nullptr
                                      : reinterpret_cast<T*>(base_() + m_offset);
     }
@@ -32,10 +32,10 @@ public:
                        ? NullValue
                        : (reinterpret_cast<offset_type>(ptr) - base_());
     }
-    bool operator==(const offset_ptr& other) const {
+    [[nodiscard]] bool operator==(const offset_ptr& other) const {
         return get() == other.get();
     }
-    bool operator!=(const offset_ptr& other) const {
+    [[nodiscard]] bool operator!=(const offset_ptr& other) const {
         return get() != other.get();
     }
     offset_ptr& operator=(const offset_ptr& other) {
@@ -46,26 +46,29 @@ public:
         set(other.get());
         return *this;
     }
-    T& operator[](size_type pos) const { return get()[pos]; }
-    T& operator*() const { return *get(); }
-    T* operator->() const { return get(); }
-    operator bool() const { return m_offset != NullValue; }
+    [[nodiscard]] T& operator[](size_type pos) const { return get()[pos]; }
+    [[nodiscard]] T& operator*() const { return *get(); }
+    [[nodiscard]] T* operator->() const { return get(); }
+    [[nodiscard]] operator bool() const { return m_offset != NullValue; }
 
-    #if ENABLE_OFFSET_PTR_TRANSLATE
-    T* translate(const void* srcBase, void* dstBase) const {
+#if ENABLE_OFFSET_PTR_TRANSLATE
+    [[nodiscard]] T* translate(const void* srcBase, void* dstBase) const {
         return reinterpret_cast<T*>(reinterpret_cast<uintptr_t>(get()) -
                                     reinterpret_cast<uintptr_t>(srcBase) +
                                     reinterpret_cast<uintptr_t>(dstBase));
     }
-    const T* translate(const void* srcBase, const void* dstBase) const {
+    [[nodiscard]] const T* translate(const void* srcBase,
+                                     const void* dstBase) const {
         return reinterpret_cast<const T*>(reinterpret_cast<uintptr_t>(get()) -
                                           reinterpret_cast<uintptr_t>(srcBase) +
                                           reinterpret_cast<uintptr_t>(dstBase));
     }
-    #endif
+#endif
 
 private:
-    offset_type base_() const { return reinterpret_cast<offset_type>(this); }
+    [[nodiscard]] offset_type base_() const {
+        return reinterpret_cast<offset_type>(this);
+    }
 
     // Considered null when the offset is one byte, to allow pointing to self.
     static const offset_type NullValue = 1;

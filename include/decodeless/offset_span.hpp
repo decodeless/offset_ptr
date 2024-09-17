@@ -15,7 +15,7 @@
 #endif
 
 #ifndef ENABLE_OFFSET_PTR_TRANSLATE
-#define ENABLE_OFFSET_PTR_TRANSLATE 0
+    #define ENABLE_OFFSET_PTR_TRANSLATE 0
 #endif
 
 namespace decodeless {
@@ -34,15 +34,16 @@ public:
 
 #ifdef __cpp_lib_span
     operator std::span<T>() const { return {m_data.get(), m_size}; }
-    std::span<T> subspan(size_type offset) const {
+    [[nodiscard]] std::span<T> subspan(size_type offset) const {
         return {m_data.get() + offset, m_size - offset};
     }
     #if ENABLE_OFFSET_PTR_TRANSLATE
-    std::span<T> translate(const void* srcBase, void* dstBase) const {
+    [[nodiscard]] std::span<T> translate(const void* srcBase,
+                                         void* dstBase) const {
         return {m_data.translate(srcBase, dstBase), m_size};
     }
-    std::span<const T> translate(const void* srcBase,
-                                 const void* dstBase) const {
+    [[nodiscard]] std::span<const T> translate(const void* srcBase,
+                                               const void* dstBase) const {
         return {m_data.translate(srcBase, dstBase), m_size};
     }
     #endif
@@ -59,13 +60,16 @@ public:
     }
 #endif
 
-    iterator data() const { return m_data.get(); }
-    const size_type& size() const { return m_size; }
-    iterator begin() const { return data(); }
-    iterator end() const { return data() + m_size; }
-    reference operator[](size_type pos) const { return begin()[pos]; }
-    reference front() const { return *begin(); }
-    reference back() const { return *std::prev(end()); }
+    [[nodiscard]] iterator data() const { return m_data.get(); }
+    [[nodiscard]] const size_type& size() const { return m_size; }
+    [[nodiscard]] bool empty() const { return size() == 0; }
+    [[nodiscard]] iterator begin() const { return data(); }
+    [[nodiscard]] iterator end() const { return data() + m_size; }
+    [[nodiscard]] reference operator[](size_type pos) const {
+        return begin()[pos];
+    }
+    [[nodiscard]] reference front() const { return *begin(); }
+    [[nodiscard]] reference back() const { return *std::prev(end()); }
 
 private:
     offset_ptr<T> m_data;
@@ -73,7 +77,8 @@ private:
 };
 
 template <typename Range>
-offset_span(Range&& range) -> offset_span<std::remove_reference_t<
-    decltype(*std::ranges::data(std::forward<Range>(range)))>>;
+offset_span(Range&& range)
+    -> offset_span<std::remove_reference_t<
+        decltype(*std::ranges::data(std::forward<Range>(range)))>>;
 
 } // namespace decodeless
