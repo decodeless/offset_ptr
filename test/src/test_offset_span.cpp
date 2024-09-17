@@ -10,6 +10,15 @@ TEST(Span, ConstructorDefault) {
     offset_span<int> span;
     EXPECT_EQ(nullptr, span.data());
     EXPECT_EQ(0, span.size());
+    EXPECT_TRUE(span.empty());
+}
+
+TEST(Span, ConstructorEmpty) {
+    int i[3];
+    offset_span<int> span(i, 0);
+    EXPECT_EQ(i, span.data());
+    EXPECT_EQ(0, span.size());
+    EXPECT_TRUE(span.empty());
 }
 
 TEST(Span, ConstructorPtrSize) {
@@ -17,6 +26,7 @@ TEST(Span, ConstructorPtrSize) {
     offset_span<int> span(i, std::size(i));
     EXPECT_EQ(i, span.data());
     EXPECT_EQ(3, span.size());
+    EXPECT_FALSE(span.empty());
 }
 
 TEST(Span, ConstructorSpan) {
@@ -28,6 +38,7 @@ TEST(Span, ConstructorSpan) {
     span = stdspan;
     EXPECT_EQ(i, span.data());
     EXPECT_EQ(3, span.size());
+    EXPECT_FALSE(span.empty());
 }
 
 TEST(Span, ConstructorSpanConst) {
@@ -39,6 +50,7 @@ TEST(Span, ConstructorSpanConst) {
     span = stdspan;
     EXPECT_EQ(i, span.data());
     EXPECT_EQ(3, span.size());
+    EXPECT_FALSE(span.empty());
 }
 
 TEST(Span, ConstructorRange) {
@@ -46,6 +58,7 @@ TEST(Span, ConstructorRange) {
     offset_span<int> span(i);
     EXPECT_EQ(i, span.data());
     EXPECT_EQ(3, span.size());
+    EXPECT_FALSE(span.empty());
 }
 
 TEST(Span, ConstructorVector) {

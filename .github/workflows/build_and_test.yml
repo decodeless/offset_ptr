@@ -1,7 +1,7 @@
 # Multiple platforms and compilers
 name: build and test
 
-on: [push, pull_request]
+on: pull_request
 
 jobs:
   build:
@@ -9,18 +9,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Cannot use ubuntu-latest with clang due to github bug: https://github.com/actions/runner-images/discussions/9446
-        os: [ubuntu-20.04, ubuntu-latest, windows-latest]
+        os: [ubuntu-24.04, windows-latest]
         build_type: [Debug, Release]
         c_compiler: [gcc, clang, cl]
         include:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             c_compiler: gcc
             cpp_compiler: g++
-          - os: ubuntu-20.04
+          - os: ubuntu-24.04
             c_compiler: clang
             cpp_compiler: clang++
         exclude:
@@ -28,14 +27,8 @@ jobs:
             c_compiler: gcc
           - os: windows-latest
             c_compiler: clang
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             c_compiler: cl
-          - os: ubuntu-latest
-            c_compiler: clang
-          - os: ubuntu-20.04
-            c_compiler: cl
-          - os: ubuntu-20.04
-            c_compiler: gcc
 
     steps:
     - uses: actions/checkout@v3
