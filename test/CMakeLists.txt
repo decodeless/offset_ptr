@@ -20,8 +20,6 @@ target_link_libraries(
   decodeless::offset_ptr
   gtest_main)
 
-# TODO: presets?
-# https://stackoverflow.com/questions/45955272/modern-way-to-set-compiler-flags-in-cross-platform-cmake-project
 if(MSVC)
   target_compile_options(${PROJECT_NAME}_tests PRIVATE /W4 /WX)
 else()
